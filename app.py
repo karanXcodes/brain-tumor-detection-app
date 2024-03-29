@@ -44,6 +44,3 @@ def upload_image():
             prediction = "Tumor" if predict(file_path) else "No Tumor"
             return render_template('index.html', message='File uploaded successfully', prediction=prediction, filename=filename)
     return render_template('index.html')
-
-if __name__ == '__main__':
-    app.run()
