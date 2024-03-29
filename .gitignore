@@ -1,0 +1,9 @@
+#ignore dataset
+/model/test
+/model/train
+/model/valid
+
+/dataset
+
+# ignore virtual environment
+/env

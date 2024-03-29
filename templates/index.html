@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumer Detector</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.webp') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">Brain Tumor Detector</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="btn-group ">
+                <a class="btn" href="https://linkedin.com/in/crazykaran" target="_blank">
+                  Karan
+                </a>
+              </div>
+      </nav>
+    <div class="main">
+        <div class="left">
+            <h2 class="heading">Upload MRI Image</h2>
+            <form class="form" method="post" enctype="multipart/form-data" >
+                    <div class="form-group">
+                    <label for="exampleFormControlFile1">Upload</label>
+                    <input type="file" accept="image/*" class="form-control-file" id="exampleFormControlFile1" name="file">
+                    </div>
+                <input class="btn btn-primary btn-lg btn-block button" type="submit" value="Upload">
+            </form>
+            <div class="output">
+                {% if message %}
+                    {% if message=="File uploaded successfully"%}
+                        <div class="alert alert-success" role="alert">
+                            {{message}}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-primary" role="alert">
+                            {{message}}
+                        </div>
+                    {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+        <div class="right" >
+            <div id="text">Please Upload Image</div>
+            <img id="preview" src="#" style="display: none;">
+            <div id="node" style="display: none;"></div>
+        </div>
+    </div>
+    <footer>
+        © 2024 Karan Matiyali. All rights reserved.
+    </footer>
+    <script>
+        document.getElementById('exampleFormControlFile1').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                const img=document.getElementById('preview');
+                const text=document.getElementById('text');
+                const node=document.getElementById('node');
+                text.style.display="none";
+                node.style.display="none";
+                img.style.display="block";
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        var prediction = "{{ prediction }}";
+        if(prediction){
+            const img=document.getElementById("preview");
+            const text=document.getElementById("text");
+            img.style.display="block";
+            img.style.margin="30px"
+            text.style.display="none";
+            const node=document.getElementById('node');
+            node.style.display="block";
+            node.style.marginBottom="20px";
+            if (prediction === "Tumor") {
+                img.src="{{ url_for('static', filename='images/sad.webp') }}";
+                node.innerText="Brain Tumer Detected";
+                node.className="alert alert-danger";
+            } else if (prediction === "No Tumor") {
+                img.src="{{ url_for('static', filename='images/happy.png') }}";
+                node.innerText="No Brain Tumer Detected";
+                node.className="alert alert-success";
+            }
+        }
+    </script>    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
